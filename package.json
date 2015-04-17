@@ -1,0 +1,16 @@
+{
+  "name": "analyze-css",
+  "version": "1.0.0",
+  "description": "Analyize the Optimizely CSS and store it in a database to track changes over time.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "optimizely",
+    "css",
+    "analyze"
+  ],
+  "author": "Daniel O'Connor <daniel@danoc.me>",
+  "license": "ISC"
+}
