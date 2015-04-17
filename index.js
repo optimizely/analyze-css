@@ -1,9 +1,12 @@
-var http = require('http');
-var httpPort = process.env.PORT || 7360;
+var express = require('express');
+var app = express();
 
-// Make this work in Heroku.
-http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('Hello World!\n');
-}).listen(httpPort, '127.0.0.1');
-console.log('Server running at http://127.0.0.1:' + httpPort + '/');
+app.set('port', (process.env.PORT || 7360));
+
+app.get('/', function(request, response) {
+  response.send('Hello World!');
+});
+
+app.listen(app.get('port'), function() {
+  console.log("Node app is running at localhost:" + app.get('port') + '.');
+});
