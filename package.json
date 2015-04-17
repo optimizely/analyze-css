@@ -12,5 +12,8 @@
     "analyze"
   ],
   "author": "Daniel O'Connor <daniel@danoc.me>",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "parker": "0.0.8"
+  }
 }
