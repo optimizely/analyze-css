@@ -1,3 +1,4 @@
+#! /app/bin/node
 (function() {
   var table = 'entries';
   var exec = require('child_process').exec;
