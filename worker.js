@@ -6,6 +6,8 @@
     connection: process.env.DATABASE_URL,
     debug: false
   });
+  var stylesheetURL = process.argv[2];
+
 
   var run = knex.schema.hasTable(table).then(function(exists) {
     if (!exists) {
@@ -37,25 +39,28 @@
       });
     } else {
       console.log('Fetching the CSS and analyzing with Parker.');
-      exec('curl https://www.optimizely.com/signin -s | grep -o /master-[0-9]*\.[0-9]*/ | head -1 | awk \'{print "https://www.optimizely.com"$1"dist/css/app.css"}\' | xargs curl -s | ./node_modules/parker/parker.js -s --format=json', function (error, stdout, stderr) {
-        // Format the output.
-        var row = JSON.parse(stdout);
-        row['unique-colours'] = row['unique-colours'].toString();
-        row['media-queries'] = row['media-queries'].toString();
 
-        console.log('Inserting the analysis into a database.');
+      exec(stylesheetURL + ' | xargs curl -s | ./node_modules/parker/parker.js -s --format=json', function (error, stdout, stderr) {
+        if (stdout) {
+          // Format the output.
+          var row = JSON.parse(stdout);
+          row['unique-colours'] = row['unique-colours'].toString();
+          row['media-queries'] = row['media-queries'].toString();
 
-        // Store the output.
-        knex(table).insert(row)
-          .then(function() {
-            console.log('Insert completed successfully.');
-            knex.destroy();
-            process.exit();
-          })
-          .catch(function(e) {
-            console.error(e);
-            process.exit();
-          });
+          console.log('Inserting the analysis into a database.');
+
+          // Store the output.
+          knex(table).insert(row)
+            .then(function() {
+              console.log('Insert completed successfully.');
+              knex.destroy();
+              process.exit();
+            })
+            .catch(function(e) {
+              console.error(e);
+              process.exit();
+            });
+        }
       });
     }
   }).catch(function(e) {
