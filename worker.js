@@ -33,6 +33,7 @@
         t.timestamp('created_at').defaultTo(knex.raw('now()'));
       }).then(function() {
         console.log('Table created successfully.');
+        console.log('Run this command again to analyze the CSS and store it in the database.');
         knex.destroy();
         process.exit();
       });
