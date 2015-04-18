@@ -8,7 +8,6 @@
   });
   var stylesheetURL = process.argv[2];
 
-
   var run = knex.schema.hasTable(table).then(function(exists) {
     if (!exists) {
       console.log('Creating a table named \'' + table + '\'.');
