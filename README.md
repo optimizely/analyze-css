@@ -1,6 +1,6 @@
 # analyze-css
 
-A simple Node.js application to track the payload of a stylesheet over time.
+A simple Node.js application to track the payload of a stylesheet over time using [Parker](https://github.com/katiefenn/parker).
 
 
 ## How to use locally
