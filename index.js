@@ -1,3 +1,5 @@
+// This file exists since the application is deployed
+// on Heroku. The interesting code is in `worker.js`.
 var express = require('express');
 var app = express();
 
