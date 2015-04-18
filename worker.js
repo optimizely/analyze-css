@@ -3,7 +3,7 @@
   var exec = require('child_process').exec;
   var knex = require('knex')({
     client: 'pg',
-    connection: process.env.DATABASE_URL || 'postgres://doconnor:@localhost/analyze-css',
+    connection: process.env.DATABASE_URL,
     debug: false
   });
 
