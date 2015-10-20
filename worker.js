@@ -66,7 +66,7 @@
                 if (!hasColumn) {
                   console.log('Creating stylesheet column.');
                   knex.schema.table(table, function (t) {
-                    t.enum('stylesheet', ['app, p13n']);
+                    t.text('stylesheet');
                   }).then(function() {
                     console.log('Created successfully. Run again to analyze the CSS.');
                     knex.destroy();
