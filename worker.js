@@ -61,22 +61,8 @@
               process.exit();
             })
             .catch(function(e) {
-              // See if migrations need to be run.
-              knex.schema.hasColumn(table, 'stylesheet').then(function(hasColumn) {
-                if (!hasColumn) {
-                  console.log('Creating stylesheet column.');
-                  knex.schema.table(table, function (t) {
-                    t.text('stylesheet');
-                  }).then(function() {
-                    console.log('Created successfully. Run again to analyze the CSS.');
-                    knex.destroy();
-                    process.exit();
-                  });
-                } else {
-                  console.error(e);
-                  process.exit();
-                }
-              });
+              console.error(e);
+              process.exit();
             });
         }
       });
