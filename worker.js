@@ -6,13 +6,14 @@
     connection: process.env.DATABASE_URL,
     debug: false
   });
-  var stylesheetURL = process.argv[2];
+  var stylesheetURL = process.argv[3];
 
   var run = knex.schema.hasTable(table).then(function(exists) {
     if (!exists) {
       console.log('Creating a table named \'' + table + '\'.');
       return knex.schema.createTable(table, function(t) {
         t.increments('id').primary();
+        t.text('stylesheet');
         t.integer('total-stylesheets');
         t.integer('total-stylesheet-size');
         t.integer('total-rules');
@@ -47,18 +48,35 @@
           row['unique-colours'] = row['unique-colours'].toString();
           row['media-queries'] = row['media-queries'].toString();
 
+          row['stylesheet'] = process.argv[2];
+
           console.log('Inserting the analysis into a database.');
 
           // Store the output.
-          knex(table).insert(row)
+          knex(table)
+            .insert(row)
             .then(function() {
               console.log('Insert completed successfully.');
               knex.destroy();
               process.exit();
             })
             .catch(function(e) {
-              console.error(e);
-              process.exit();
+              // See if migrations need to be run.
+              knex.schema.hasColumn(table, 'stylesheet').then(function(hasColumn) {
+                if (!hasColumn) {
+                  console.log('Creating stylesheet column.');
+                  knex.schema.table(table, function (t) {
+                    t.enum('stylesheet', ['app, p13n']);
+                  }).then(function() {
+                    console.log('Created successfully. Run again to analyze the CSS.');
+                    knex.destroy();
+                    process.exit();
+                  });
+                } else {
+                  console.error(e);
+                  process.exit();
+                }
+              });
             });
         }
       });
